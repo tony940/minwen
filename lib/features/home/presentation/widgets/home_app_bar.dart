@@ -37,7 +37,7 @@ class HomeAppBar extends StatelessWidget {
 
             // زر التنبيهات الجديد
             _buildNotificationButton(),
-            SizedBox(width: 10.w),
+            SizedBox(width: 8.w),
 
             _buildSmallAskButton(context),
           ],
@@ -52,9 +52,9 @@ class HomeAppBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Welcome, Tony 👋',
+          'Welcome, mohamed 👋',
           style: TextStyle(
-            fontSize: 12.sp,
+            fontSize: 10.sp,
             fontWeight: FontWeight.w600,
             color: Colors.black87,
           ),
@@ -76,8 +76,8 @@ class HomeAppBar extends StatelessWidget {
       alignment: Alignment.topRight,
       children: [
         Container(
-          height: 38.h,
-          width: 38.h,
+          height: 30.h,
+          width: 30.h,
           decoration: BoxDecoration(
             color: Colors.grey[50],
             shape: BoxShape.circle,

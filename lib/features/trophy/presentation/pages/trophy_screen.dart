@@ -5,7 +5,6 @@ import 'package:minwen/features/trophy/presentation/widgets/trophy_activity_list
 import 'package:minwen/features/trophy/presentation/widgets/trophy_header.dart';
 import 'package:minwen/features/trophy/presentation/widgets/trophy_progress_card.dart';
 import 'package:minwen/features/trophy/presentation/widgets/trophy_score_overview.dart';
-// قم باستيراد الملفات الأخرى هنا بعد فصلها
 
 class TrophyScreen extends StatelessWidget {
   const TrophyScreen({super.key});
@@ -15,44 +14,98 @@ class TrophyScreen extends StatelessWidget {
     const Color primaryDark = Color(0xFF1B4332);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          TrophyHeader(),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(20.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 2. ملخص النقاط
-                  TrophyScoreOverview(points: "1,800", rank: "12"),
-                  verticalSpace(24),
+      // استخدام تدرج لوني خفيف جداً في الخلفية بدلاً من لون واحد ثابت
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFFFFFFF),
+              Color(0xFFF0F4F2), // تدرج مائل للأخضر البارد جداً
+            ],
+          ),
+        ),
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            // 1. Header بتصميم Floating (اختياري حسب ملف الـ Header عندك)
+            const TrophyHeader(),
 
-                  // 3. كارت التقدم
-                  TrophyProgressCard(
-                      progress: 0.7, daysLeft: 7, pointsNeeded: 400),
-                  verticalSpace(30),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 100.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // العنوان الجانبي المودرن
+                    _buildSectionTitle("إحصائياتك"),
+                    verticalSpace(16),
 
-                  Text(
-                    'Recent Activity',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: primaryDark.withOpacity(0.8),
+                    // 2. ملخص النقاط بتصميم "Glassmorphism"
+                    const TrophyScoreOverview(points: "1,800", rank: "12"),
+                    verticalSpace(24),
+
+                    // 3. كارت التقدم بتصميم "Neumorphic" خفيف
+                    const TrophyProgressCard(
+                        progress: 0.7, daysLeft: 7, pointsNeeded: 400),
+                    verticalSpace(32),
+
+                    // قسم النشاطات مع لمسة جمالية
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildSectionTitle("النشاطات الأخيرة"),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "رؤية الكل",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: primaryDark.withOpacity(0.6),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  verticalSpace(16),
+                    verticalSpace(12),
 
-                  // 4. قائمة الأنشطة
-                  TrophyActivityList(),
-                ],
+                    // 4. قائمة الأنشطة
+                    const TrophyActivityList(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w900,
+            color: const Color(0xFF1B4332),
+            letterSpacing: -0.5,
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 4.h),
+          height: 3.h,
+          width: 24.w,
+          decoration: BoxDecoration(
+            color: const Color(0xFFC59849), // لمسة ذهبية
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,9 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
 import 'package:minwen/features/home/presentation/pages/home_screen.dart';
+import 'package:minwen/features/posts/presentation/pages/posts_screen.dart';
 import 'package:minwen/features/trophy/presentation/pages/trophy_screen.dart';
 
 class MainScaffold extends StatelessWidget {
@@ -12,9 +15,11 @@ class MainScaffold extends StatelessWidget {
   final List<Widget> _pages = const [
     HomeScreen(),
     TrophyScreen(),
-    DummyPage(text: "Create New", icon: Icons.add_rounded),
-    DummyPage(text: "Grid View", icon: Icons.grid_view_rounded),
-    DummyPage(text: "Profile Screen", icon: Icons.person_rounded),
+    PostsScreen(),
+    PostsScreen(),
+    PostsScreen(),
+    // DummyPage(text: "Discover", icon: Icons.explore_rounded),
+    // DummyPage(text: "Profile", icon: Icons.person_rounded),
   ];
 
   @override
@@ -23,113 +28,132 @@ class MainScaffold extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<MainScaffoldCubit>();
         int selectedIndex = cubit.currentIndex;
+
         return Scaffold(
-          backgroundColor: Colors.white,
+          extendBody:
+              false, // مهم جداً لجعل الـ Body يظهر خلف الـ NavBar الشفاف
+          backgroundColor: const Color(0xFFF8F9FA),
           body: IndexedStack(
             index: selectedIndex,
             children: _pages,
           ),
-          bottomNavigationBar: _buildBottomNavBar(context, selectedIndex),
+          bottomNavigationBar: _buildModernNavBar(context, selectedIndex),
         );
       },
     );
   }
 
-  Widget _buildBottomNavBar(BuildContext context, int selectedIndex) {
+  Widget _buildModernNavBar(BuildContext context, int selectedIndex) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 20.h),
-      height: 60.h,
-      decoration: BoxDecoration(
-        color: const Color(0xFF2D5A4F).withOpacity(0.95),
-        borderRadius: BorderRadius.circular(40.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 8.h),
+      height: 70.h,
+      child: Stack(
         children: [
-          _navItem(context, Icons.home_rounded, 0, selectedIndex),
-          _navItem(context, Icons.emoji_events_rounded, 1, selectedIndex),
-          _navItem(context, Icons.add_rounded, 2, selectedIndex, isBig: true),
-          _navItem(context, Icons.grid_view_rounded, 3, selectedIndex),
-          _navItem(context, Icons.person_rounded, 4, selectedIndex),
+          // 1. تأثير الزجاج الضبابي (Glass Background)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(30.r),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1B4332).withOpacity(0.85),
+                  borderRadius: BorderRadius.circular(30.r),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.1),
+                    width: 1.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // 2. العناصر والـ Indicator
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _navItem(context, Icons.home_filled, 0, selectedIndex),
+                _navItem(context, Icons.emoji_events_rounded, 1, selectedIndex),
+                _buildCenterButton(context, selectedIndex), // زر الإضافة المميز
+                _navItem(context, Icons.explore_rounded, 3, selectedIndex),
+                _navItem(context, Icons.person_2_rounded, 4, selectedIndex),
+              ],
+            ),
+          ),
         ],
       ),
     )
         .animate()
-        .slideY(begin: 1, end: 0, duration: 600.ms, curve: Curves.easeOutBack);
+        .slideY(begin: 1, end: 0, duration: 800.ms, curve: Curves.easeOutQuart);
   }
 
   Widget _navItem(
-      BuildContext context, IconData icon, int index, int selectedIndex,
-      {bool isBig = false}) {
+      BuildContext context, IconData icon, int index, int selectedIndex) {
     bool isSelected = selectedIndex == index;
-    const Color accentColor = Color(0xFFC59849);
+    const Color activeColor = Color(0xFFC59849);
 
-    return Flexible(
-      child: GestureDetector(
-        onTap: () => context.read<MainScaffoldCubit>().changeIndex(index),
-        child: AnimatedContainer(
-          duration: 300.ms,
-          curve: Curves.easeInOut,
-          height: 48.h,
-          width: 48.h,
-          decoration: BoxDecoration(
-            color: isSelected ? accentColor : accentColor.withOpacity(0.15),
-            shape: BoxShape.circle,
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: accentColor.withOpacity(0.4),
-                      blurRadius: 15,
-                      spreadRadius: 2,
-                    )
-                  ]
-                : [],
-          ),
-          child: Icon(
-            icon,
-            color: isSelected ? Colors.black : accentColor,
-            size: isBig ? 28.sp : 22.sp,
-          )
-              .animate(target: isSelected ? 1 : 0)
-              .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1)),
-        ),
-      ),
-    );
-  }
-}
-
-// الـ DummyPage كما هي
-class DummyPage extends StatelessWidget {
-  final String text;
-  final IconData icon;
-  const DummyPage({super.key, required this.text, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact(); // اهتزاز خفيف عند اللمس
+        context.read<MainScaffoldCubit>().changeIndex(index);
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon,
-              size: 80.sp, color: const Color(0xFF2D5A4F).withOpacity(0.1)),
-          SizedBox(height: 16.h),
-          Text(
-            text,
-            style: TextStyle(
-              color: const Color(0xFF2D5A4F),
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Icon(
+            icon,
+            color: isSelected ? activeColor : Colors.white.withOpacity(0.5),
+            size: 24.sp,
+          )
+              .animate(target: isSelected ? 1 : 0)
+              .scale(end: const Offset(1.2, 1.2))
+              .shake(hz: 2),
+          if (isSelected)
+            Container(
+              margin: EdgeInsets.only(top: 4.h),
+              height: 4.h,
+              width: 4.h,
+              decoration: const BoxDecoration(
+                color: activeColor,
+                shape: BoxShape.circle,
+              ),
+            ).animate().scale().fadeIn(),
         ],
-      ).animate().fadeIn(duration: 400.ms).scale(begin: const Offset(0.9, 0.9)),
+      ),
+    );
+  }
+
+  // زر الإضافة في المنتصف بتصميم بارز
+  Widget _buildCenterButton(BuildContext context, int selectedIndex) {
+    bool isSelected = selectedIndex == 2;
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        context.read<MainScaffoldCubit>().changeIndex(2);
+      },
+      child: Container(
+        height: 50.h,
+        width: 50.h,
+        decoration: BoxDecoration(
+          color: const Color(0xFFC59849),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFC59849).withOpacity(0.4),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Icon(
+          Icons.add_rounded,
+          color: Colors.white,
+          size: 32.sp,
+        ),
+      )
+          .animate(target: isSelected ? 1 : 0)
+          .rotate(begin: 0, end: 0.125), // يدور قليلاً ليصبح x عند الاختيار
     );
   }
 }

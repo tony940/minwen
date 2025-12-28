@@ -15,7 +15,6 @@ class HomeBanners extends StatefulWidget {
 class _HomeBannersState extends State<HomeBanners> {
   int _currentSlide = 0;
 
-  // قائمة صور ممولين (Sponsors) - صور حقيقية تعبر عن التسوق والبراندات
   final List<Map<String, String>> _sponsors = [
     {
       'image':

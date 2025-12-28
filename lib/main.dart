@@ -17,7 +17,7 @@ void main() async {
   runApp(
     // 1. Wrap your App in DevicePreview
     DevicePreview(
-      enabled: false, // Enable preview only in debug mode
+      enabled: true, // Enable preview only in debug mode
       builder: (context) => const MyApp(),
     ),
   );
