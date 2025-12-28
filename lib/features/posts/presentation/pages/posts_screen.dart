@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
 import 'package:minwen/core/themes/app_colors.dart';
 import 'package:minwen/core/utils/spacing.dart';
 import 'package:minwen/features/posts/presentation/widgets/create_post_card.dart';
@@ -19,13 +21,16 @@ class PostsScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
-                  child: verticalSpace(110.h)), // مساحة للـ Floating Header
-
+                  child: verticalSpace(80.h)), // مساحة للـ Floating Header
               // 2. قسم "ماذا يدور في ذهنك" بتصميم زجاجي
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: const CreatePostCard(userName: "محمد"),
+                  child: GestureDetector(
+                      onTap: () {
+                        context.read<MainScaffoldCubit>().changeIndex(2);
+                      },
+                      child: const CreatePostCard(userName: "محمد")),
                 ),
               ),
               SliverToBoxAdapter(child: verticalSpace(16)),

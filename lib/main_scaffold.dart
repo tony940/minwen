@@ -6,7 +6,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
 import 'package:minwen/features/home/presentation/pages/home_screen.dart';
+import 'package:minwen/features/posts/presentation/pages/create_post_screen.dart';
 import 'package:minwen/features/posts/presentation/pages/posts_screen.dart';
+import 'package:minwen/features/profile/presentation/pages/profile_screen.dart';
 import 'package:minwen/features/trophy/presentation/pages/trophy_screen.dart';
 
 class MainScaffold extends StatelessWidget {
@@ -15,11 +17,9 @@ class MainScaffold extends StatelessWidget {
   final List<Widget> _pages = const [
     HomeScreen(),
     TrophyScreen(),
+    CreatePostScreen(),
     PostsScreen(),
-    PostsScreen(),
-    PostsScreen(),
-    // DummyPage(text: "Discover", icon: Icons.explore_rounded),
-    // DummyPage(text: "Profile", icon: Icons.person_rounded),
+    ProfileScreen(),
   ];
 
   @override
@@ -30,8 +30,6 @@ class MainScaffold extends StatelessWidget {
         int selectedIndex = cubit.currentIndex;
 
         return Scaffold(
-          extendBody:
-              false, // مهم جداً لجعل الـ Body يظهر خلف الـ NavBar الشفاف
           backgroundColor: const Color(0xFFF8F9FA),
           body: IndexedStack(
             index: selectedIndex,
@@ -46,7 +44,7 @@ class MainScaffold extends StatelessWidget {
   Widget _buildModernNavBar(BuildContext context, int selectedIndex) {
     return Container(
       margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 8.h),
-      height: 70.h,
+      height: 60.h,
       child: Stack(
         children: [
           // 1. تأثير الزجاج الضبابي (Glass Background)
@@ -77,7 +75,7 @@ class MainScaffold extends StatelessWidget {
                 _navItem(context, Icons.emoji_events_rounded, 1, selectedIndex),
                 _buildCenterButton(context, selectedIndex), // زر الإضافة المميز
                 _navItem(context, Icons.explore_rounded, 3, selectedIndex),
-                _navItem(context, Icons.person_2_rounded, 4, selectedIndex),
+                _navItem(context, Icons.person, 4, selectedIndex),
               ],
             ),
           ),
@@ -152,7 +150,10 @@ class MainScaffold extends StatelessWidget {
           size: 32.sp,
         ),
       )
-          .animate(target: isSelected ? 1 : 0)
+          .animate(
+              target: isSelected
+                  ? 1
+                  : 0) //when is selectd true the animation will happen else not happen
           .rotate(begin: 0, end: 0.125), // يدور قليلاً ليصبح x عند الاختيار
     );
   }

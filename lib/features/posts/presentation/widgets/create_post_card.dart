@@ -37,11 +37,11 @@ class CreatePostCard extends StatelessWidget {
           ),
           verticalSpace(16),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _buildMiniAction(Icons.image_rounded, "صورة", Colors.green),
+              horizontalSpace(12),
               _buildMiniAction(Icons.videocam_rounded, "فيديو", Colors.red),
-              _buildMiniAction(Icons.location_on_rounded, "موقع", Colors.blue),
             ],
           ),
         ],

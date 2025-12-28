@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
 import 'package:minwen/core/themes/app_colors.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:minwen/core/themes/app_text_styles.dart';
@@ -43,7 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: AppTextStyles.font16BlackSemiBold,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<MainScaffoldCubit>().changeIndex(3);
+                      },
                       child: Text(
                         'See All',
                         style: AppTextStyles.font14BlackRegular.copyWith(

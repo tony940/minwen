@@ -56,7 +56,7 @@ class PostCard extends StatelessWidget {
           children: [
             Text('سارة أحمد',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp)),
-            Text('منذ 15 دقيقة • إلكترونيات',
+            Text('منذ 15 دقيقة  ',
                 style: TextStyle(color: Colors.grey, fontSize: 10.sp)),
           ],
         ),

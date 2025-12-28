@@ -1,43 +1,92 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TrophyHeader extends StatelessWidget {
-  const TrophyHeader({
-    super.key,
-  });
+class TrophyHeader extends StatelessWidget implements PreferredSizeWidget {
+  const TrophyHeader({super.key});
+
+  // This defines the height of your custom AppBar
+  @override
+  Size get preferredSize => Size.fromHeight(56.h);
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: 120.h,
-      backgroundColor: const Color(0xFF1B4332),
-      automaticallyImplyLeading: false,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(30.r)),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1B4332),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1B4332).withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-        title: Row(
+      child: SafeArea(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // Left Side: Branding & Title
             Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('MinWan',
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white)),
-                Text('جمع النقاط',
-                    style: TextStyle(fontSize: 10.sp, color: Colors.white70)),
+                Row(
+                  children: [
+                    Text(
+                      'MINWAN',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFFC59849), // Gold accent
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    SizedBox(width: 6.w),
+                    Container(
+                      width: 4.w,
+                      height: 4.h,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFC59849),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  'جمع النقاط',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
-            CircleAvatar(
-              radius: 18.r,
-              backgroundColor: Colors.white24,
-              child:
-                  Icon(Icons.person_outline, color: Colors.white, size: 20.sp),
+
+            // Right Side: Modern Profile Container
+            Container(
+              padding: EdgeInsets.all(2.r),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: CircleAvatar(
+                radius: 22.r,
+                backgroundColor: Colors.white.withOpacity(0.1),
+                child: Icon(
+                  Icons.person_outline_rounded,
+                  color: Colors.white,
+                  size: 24.sp,
+                ),
+              ),
             ),
           ],
         ),

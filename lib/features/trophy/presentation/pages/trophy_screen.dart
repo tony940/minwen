@@ -14,6 +14,7 @@ class TrophyScreen extends StatelessWidget {
     const Color primaryDark = Color(0xFF1B4332);
 
     return Scaffold(
+      appBar: const TrophyHeader(),
       // استخدام تدرج لوني خفيف جداً في الخلفية بدلاً من لون واحد ثابت
       body: Container(
         decoration: const BoxDecoration(
@@ -29,9 +30,6 @@ class TrophyScreen extends StatelessWidget {
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            // 1. Header بتصميم Floating (اختياري حسب ملف الـ Header عندك)
-            const TrophyHeader(),
-
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 100.h),
