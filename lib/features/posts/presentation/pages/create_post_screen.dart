@@ -1,6 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:minwen/core/utils/my_toast.dart';
+import 'package:minwen/core/widgets/app_loading_dialog.dart';
+import 'package:minwen/features/posts/presentation/cubit/create_post_cubit.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -20,18 +24,31 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildUserHeader(),
-              SizedBox(height: 25.h),
-              _buildInputArea(),
-              SizedBox(height: 20.h),
-              // Enhanced Unified Media Selector
-              _buildUnifiedMediaCard(),
-              SizedBox(height: 40.h),
-              _buildPremiumPublishButton(),
-            ],
+          child: BlocListener<CreatePostCubit, CreatePostState>(
+            listener: (context, state) {
+              if (state is CreatePostLoadingState) {
+                AppLoadingDialog.show(context, message: 'Publishing...');
+              } else if (state is CreatePostSuccessState) {
+                MyToast.success(context, 'Post created successfully');
+                AppLoadingDialog.hide(context);
+              } else if (state is CreatePostFailureState) {
+                MyToast.error(context, 'Failed to create post');
+                AppLoadingDialog.hide(context);
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildUserHeader(),
+                SizedBox(height: 25.h),
+                _buildInputArea(),
+                SizedBox(height: 20.h),
+                // Enhanced Unified Media Selector
+                _buildUnifiedMediaCard(),
+                SizedBox(height: 40.h),
+                _buildPremiumPublishButton(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -217,7 +234,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  Widget _buildPremiumPublishButton() {
+  Widget _buildPremiumPublishButton(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 45.h,
@@ -238,7 +255,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          // Publish logic
+          context.read<CreatePostCubit>().createPost();
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,

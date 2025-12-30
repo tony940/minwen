@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart';
+import 'package:minwen/core/routing/app_router.dart';
 import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
 import 'package:minwen/core/themes/app_colors.dart';
 import 'package:path/path.dart';
@@ -31,12 +33,11 @@ class HomeAppBar extends StatelessWidget {
       child: SafeArea(
         child: Row(
           children: [
-            _buildProfileAvatar(),
+            _buildProfileAvatar(context),
             SizedBox(width: 12.w),
             Expanded(child: _buildWelcomeSection()),
-
             // زر التنبيهات الجديد
-            _buildNotificationButton(),
+            _buildNotificationButton(context),
             SizedBox(width: 8.w),
 
             _buildSmallAskButton(context),
@@ -71,39 +72,44 @@ class HomeAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationButton() {
-    return Stack(
-      alignment: Alignment.topRight,
-      children: [
-        Container(
-          height: 30.h,
-          width: 30.h,
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.grey[200]!, width: 0.5),
-          ),
-          child: Icon(
-            Icons.notifications_none_rounded, // أيقونة ناعمة ومودرن
-            color: Colors.black87,
-            size: 22.sp,
-          ),
-        ),
-        // النقطة الحمراء (الاشعار)
-        Positioned(
-          top: 8.h,
-          right: 8.w,
-          child: Container(
-            height: 8.h,
-            width: 8.h,
+  Widget _buildNotificationButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.push(AppRouter.notification);
+      },
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Container(
+            height: 30.h,
+            width: 30.h,
             decoration: BoxDecoration(
-              color: const Color(0xFFFF5252),
+              color: Colors.grey[50],
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 1.5),
+              border: Border.all(color: Colors.grey[200]!, width: 0.5),
+            ),
+            child: Icon(
+              Icons.notifications_none_rounded, // أيقونة ناعمة ومودرن
+              color: Colors.black87,
+              size: 22.sp,
             ),
           ),
-        ),
-      ],
+          // النقطة الحمراء (الاشعار)
+          Positioned(
+            top: 8.h,
+            right: 8.w,
+            child: Container(
+              height: 8.h,
+              width: 8.h,
+              decoration: BoxDecoration(
+                color: const Color(0xFFFF5252),
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 1.5),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -149,18 +155,23 @@ class HomeAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileAvatar() {
-    return Container(
-      padding: EdgeInsets.all(2.w),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-            color: AppColors.primaryColor.withOpacity(0.1), width: 1),
-      ),
-      child: CircleAvatar(
-        radius: 18.r,
-        backgroundColor: Colors.grey[100],
-        backgroundImage: const NetworkImage('https://i.pravatar.cc/150?u=24'),
+  Widget _buildProfileAvatar(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.read<MainScaffoldCubit>().changeIndex(4);
+      },
+      child: Container(
+        padding: EdgeInsets.all(2.w),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+              color: AppColors.primaryColor.withOpacity(0.1), width: 1),
+        ),
+        child: CircleAvatar(
+          radius: 18.r,
+          backgroundColor: Colors.grey[100],
+          backgroundImage: const NetworkImage('https://i.pravatar.cc/150?u=24'),
+        ),
       ),
     );
   }

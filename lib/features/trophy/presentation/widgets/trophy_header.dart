@@ -1,6 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
+import 'package:minwen/main_scaffold.dart';
 
 class TrophyHeader extends StatelessWidget implements PreferredSizeWidget {
   const TrophyHeader({super.key});
@@ -69,22 +72,27 @@ class TrophyHeader extends StatelessWidget implements PreferredSizeWidget {
             ),
 
             // Right Side: Modern Profile Container
-            Container(
-              padding: EdgeInsets.all(2.r),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
-                  width: 1,
+            GestureDetector(
+              onTap: () {
+                context.read<MainScaffoldCubit>().changeIndex(4);
+              },
+              child: Container(
+                padding: EdgeInsets.all(2.r),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.2),
+                    width: 1,
+                  ),
                 ),
-              ),
-              child: CircleAvatar(
-                radius: 22.r,
-                backgroundColor: Colors.white.withOpacity(0.1),
-                child: Icon(
-                  Icons.person_outline_rounded,
-                  color: Colors.white,
-                  size: 24.sp,
+                child: CircleAvatar(
+                  radius: 22.r,
+                  backgroundColor: Colors.white.withOpacity(0.1),
+                  child: Icon(
+                    Icons.person_outline_rounded,
+                    color: Colors.white,
+                    size: 24.sp,
+                  ),
                 ),
               ),
             ),

@@ -4,20 +4,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:minwen/core/dependency_injection/dependency_injection.dart';
 import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
 import 'package:minwen/features/home/presentation/pages/home_screen.dart';
+import 'package:minwen/features/posts/presentation/cubit/create_post_cubit.dart';
 import 'package:minwen/features/posts/presentation/pages/create_post_screen.dart';
 import 'package:minwen/features/posts/presentation/pages/posts_screen.dart';
 import 'package:minwen/features/profile/presentation/pages/profile_screen.dart';
 import 'package:minwen/features/trophy/presentation/pages/trophy_screen.dart';
 
 class MainScaffold extends StatelessWidget {
-  const MainScaffold({super.key});
-
-  final List<Widget> _pages = const [
+  MainScaffold({super.key});
+  final List<Widget> _pages = [
     HomeScreen(),
     TrophyScreen(),
-    CreatePostScreen(),
+    BlocProvider(
+      create: (context) => getIt<CreatePostCubit>(),
+      child: CreatePostScreen(),
+    ),
     PostsScreen(),
     ProfileScreen(),
   ];

@@ -8,6 +8,8 @@ import 'package:minwen/features/auth/login/presentation/pages/login_screen.dart'
 import 'package:minwen/features/auth/sign_up/presentation/pages/otp_screen.dart';
 import 'package:minwen/features/auth/sign_up/presentation/pages/regiseration_success.dart';
 import 'package:minwen/features/auth/sign_up/presentation/pages/sign_up_screen.dart';
+import 'package:minwen/features/notification/presentation/cubit/notification_cubit.dart';
+import 'package:minwen/features/notification/presentation/pages/notification_screen.dart';
 import 'package:minwen/features/splash/presentation/pages/splash_screen.dart';
 import 'package:minwen/main_scaffold.dart';
 
@@ -18,6 +20,7 @@ class AppRouter {
   static final String otpScreen = '/otpScreen';
   static final String regiserationSuccess = '/regiserationSuccess';
   static final String mainScaffold = '/mainScaffold';
+  static final String notification = '/notification';
   static final GoRouter router = GoRouter(
     initialLocation: mainScaffold,
     routes: [
@@ -47,6 +50,13 @@ class AppRouter {
       GoRoute(
         path: mainScaffold,
         builder: (context, state) => MainScaffold(),
+      ),
+      GoRoute(
+        path: notification,
+        builder: (context, state) => BlocProvider(
+          create: (context) => getIt<NotificationCubit>()..getAllNotification(),
+          child: NotificationScreen(),
+        ),
       ),
     ],
     errorBuilder: (context, state) =>
