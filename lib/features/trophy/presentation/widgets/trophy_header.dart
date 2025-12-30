@@ -61,7 +61,7 @@ class TrophyHeader extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
                 Text(
-                  'جمع النقاط',
+                  'Earn Points',
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,

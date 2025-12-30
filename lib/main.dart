@@ -13,11 +13,10 @@ void main() async {
 
   // Initialize Dependency Injection
   setupGetIt();
-
   runApp(
     // 1. Wrap your App in DevicePreview
     DevicePreview(
-      enabled: true, // Enable preview only in debug mode
+      enabled: false, // Enable preview only in debug mode
       builder: (context) => const MyApp(),
     ),
   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LevelDashboard extends StatelessWidget {
@@ -9,7 +10,7 @@ class LevelDashboard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(20.r),
       decoration: BoxDecoration(
-        color: const Color(0xFF1B4332),
+        color: const Color(0xFF1B4332), // Brand Dark Green
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
@@ -27,7 +28,9 @@ class LevelDashboard extends StatelessWidget {
           _buildFooter(),
         ],
       ),
-    );
+    ).animate(onPlay: (controller) {
+      controller.repeat(reverse: true);
+    }).shimmer(duration: 10.seconds);
   }
 
   Widget _buildHeader() {
@@ -37,17 +40,30 @@ class LevelDashboard extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('المستوى الحالي',
-                style: TextStyle(color: Colors.white60, fontSize: 11.sp)),
-            Text('خبير بلاتيني',
-                style: TextStyle(
-                    color: const Color(0xFFC59849),
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold)),
+            Text(
+              'CURRENT LEVEL',
+              style: TextStyle(
+                color: Colors.white60,
+                fontSize: 10.sp,
+                letterSpacing: 1.2,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Platinum Expert',
+              style: TextStyle(
+                color: const Color(0xFFC59849), // Gold Accent
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
-        const Icon(Icons.workspace_premium_rounded,
-            color: Color(0xFFC59849), size: 35),
+        const Icon(
+          Icons.workspace_premium_rounded,
+          color: Color(0xFFC59849),
+          size: 35,
+        ),
       ],
     );
   }
@@ -55,12 +71,16 @@ class LevelDashboard extends StatelessWidget {
   Widget _buildProgressBar() {
     return Stack(
       children: [
+        // Progress Track
         Container(
-            height: 8.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10.r))),
+          height: 8.h,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+        ),
+        // Active Progress
         FractionallySizedBox(
           widthFactor: 0.65,
           child: Container(
@@ -70,8 +90,9 @@ class LevelDashboard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
               boxShadow: [
                 BoxShadow(
-                    color: const Color(0xFFC59849).withOpacity(0.5),
-                    blurRadius: 10)
+                  color: const Color(0xFFC59849).withOpacity(0.5),
+                  blurRadius: 10,
+                )
               ],
             ),
           ),
@@ -84,10 +105,21 @@ class LevelDashboard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('650 / 1000 نقطة',
-            style: TextStyle(color: Colors.white, fontSize: 11.sp)),
-        Text('المستوى 12',
-            style: TextStyle(color: Colors.white70, fontSize: 11.sp)),
+        Text(
+          '650 / 1000 Points',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 11.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          'Level 12',
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 11.sp,
+          ),
+        ),
       ],
     );
   }

@@ -15,7 +15,6 @@ class TrophyScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: const TrophyHeader(),
-      // استخدام تدرج لوني خفيف جداً في الخلفية بدلاً من لون واحد ثابت
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -23,7 +22,7 @@ class TrophyScreen extends StatelessWidget {
             end: Alignment.bottomCenter,
             colors: [
               Color(0xFFFFFFFF),
-              Color(0xFFF0F4F2), // تدرج مائل للأخضر البارد جداً
+              Color(0xFFF8FAF9), // Even lighter slim gradient
             ],
           ),
         ),
@@ -32,36 +31,41 @@ class TrophyScreen extends StatelessWidget {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 100.h),
+                padding: EdgeInsets.fromLTRB(
+                    16.w, 10.h, 16.w, 80.h), // Tightened horizontal padding
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // العنوان الجانبي المودرن
-                    _buildSectionTitle("إحصائياتك"),
-                    verticalSpace(16),
+                    // Section Title
+                    _buildSectionTitle("Your Statistics"),
+                    verticalSpace(12),
 
-                    // 2. ملخص النقاط بتصميم "Glassmorphism"
+                    // 1. Score Overview (Glassmorphism)
                     const TrophyScoreOverview(points: "1,800", rank: "12"),
-                    verticalSpace(24),
+                    verticalSpace(20),
 
-                    // 3. كارت التقدم بتصميم "Neumorphic" خفيف
+                    // 2. Progress Card (Clean/Slim)
                     const TrophyProgressCard(
                         progress: 0.7, daysLeft: 7, pointsNeeded: 400),
-                    verticalSpace(32),
+                    verticalSpace(24),
 
-                    // قسم النشاطات مع لمسة جمالية
+                    // 3. Activity Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        _buildSectionTitle("النشاطات الأخيرة"),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "رؤية الكل",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: primaryDark.withOpacity(0.6),
-                              fontWeight: FontWeight.bold,
+                        _buildSectionTitle("Recent Activity"),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 2.h),
+                            child: Text(
+                              "See All",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: primaryDark.withOpacity(0.5),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
@@ -69,7 +73,7 @@ class TrophyScreen extends StatelessWidget {
                     ),
                     verticalSpace(12),
 
-                    // 4. قائمة الأنشطة
+                    // 4. Activity List
                     const TrophyActivityList(),
                   ],
                 ),
@@ -88,18 +92,18 @@ class TrophyScreen extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w900,
+            fontSize: 15.sp, // Reduced size for slim look
+            fontWeight: FontWeight.w800,
             color: const Color(0xFF1B4332),
-            letterSpacing: -0.5,
+            letterSpacing: -0.3,
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 4.h),
-          height: 3.h,
-          width: 24.w,
+          margin: EdgeInsets.only(top: 2.h),
+          height: 2.h, // Thinner underline
+          width: 16.w,
           decoration: BoxDecoration(
-            color: const Color(0xFFC59849), // لمسة ذهبية
+            color: const Color(0xFFC59849),
             borderRadius: BorderRadius.circular(10),
           ),
         ),

@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:minwen/core/themes/app_colors.dart';
-import 'package:minwen/core/themes/app_text_styles.dart';
 import 'package:minwen/core/utils/spacing.dart';
 
 class HomeRecentPageView extends StatefulWidget {
@@ -20,8 +17,9 @@ class _HomeRecentPageViewState extends State<HomeRecentPageView> {
   @override
   void initState() {
     super.initState();
-    _productPageController = PageController(viewportFraction: 0.7)
-      ..addListener(_handlePageScroll);
+    _productPageController =
+        PageController(viewportFraction: 0.65) // Slimmer fraction
+          ..addListener(_handlePageScroll);
   }
 
   void _handlePageScroll() {
@@ -39,27 +37,25 @@ class _HomeRecentPageViewState extends State<HomeRecentPageView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 420.h,
+      height: 380.h, // Slimmer overall height
       child: PageView.builder(
         controller: _productPageController,
-        itemCount: 4, // 5 صفحات × 2 عناصر في كل صفحة = 10 عناصر إجمالاً
+        itemCount: 4,
         padEnds: false,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          // حساب الـ scale بناءً على القرب من المركز
           final double distanceToCenter = (_currentScrollOffset - index).abs();
           final double scaleFactor =
-              (1 - (distanceToCenter * 0.15)).clamp(0.85, 1.0);
+              (1 - (distanceToCenter * 0.12)).clamp(0.88, 1.0);
 
           return Transform.scale(
             scale: scaleFactor,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h),
+              padding: EdgeInsets.symmetric(vertical: 8.h),
               child: Column(
                 children: [
-                  // استخدام معادلة (index * 2) لضمان عدم تكرار البيانات
                   Expanded(child: ProductCardItem(index: index * 2)),
-                  verticalSpace(16),
+                  verticalSpace(10.h), // Tightened vertical gap
                   Expanded(child: ProductCardItem(index: index * 2 + 1)),
                 ],
               ),
@@ -75,35 +71,28 @@ class ProductCardItem extends StatelessWidget {
   final int index;
   const ProductCardItem({super.key, required this.index});
 
-  // قائمة صور منتجات متنوعة لتعطي شكل حقيقي للتطبيق
   static const List<String> _productImages = [
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80', // Watch
-    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80', // Red Shoes
-    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80', // Headphones
-    'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&q=80', // Camera
-    'https://images.unsplash.com/photo-1585333127302-c29207229d04?w=500&q=80', // Laptop
-    'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&q=80', // Glasses
-    'https://images.unsplash.com/photo-1591337676887-a217a6970c8a?w=500&q=80', // iPhone
-    'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&q=80', // Smart Watch
+    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80',
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
+    'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&q=80',
+    'https://images.unsplash.com/photo-1585333127302-c29207229d04?w=500&q=80',
+    'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&q=80',
+    'https://images.unsplash.com/photo-1591337676887-a217a6970c8a?w=500&q=80',
+    'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&q=80',
   ];
 
   @override
   Widget build(BuildContext context) {
-    // اختيار الصورة بناءً على الاندكس مع ضمان عدم تخطي طول القائمة
     final String imageUrl = _productImages[index % _productImages.length];
 
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(16.r), // Slimmer radius
+        border:
+            Border.all(color: Colors.grey[100]!, width: 1), // Surgical border
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,25 +107,24 @@ class ProductCardItem extends StatelessWidget {
 
   Widget _buildUserHeader() {
     return Padding(
-      padding: EdgeInsets.all(10.w),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       child: Row(
         children: [
           CircleAvatar(
-            radius: 12.r,
+            radius: 10.r, // Compact avatar
             backgroundImage:
                 const NetworkImage('https://i.pravatar.cc/150?u=20'),
           ),
-          horizontalSpace(8),
+          horizontalSpace(6),
           Expanded(
             child: Text(
               'Tony Mikhael',
               style: TextStyle(
-                color: Colors.grey[800],
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+                fontSize: 9.sp,
+                fontWeight: FontWeight.bold,
               ),
               maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -148,19 +136,15 @@ class ProductCardItem extends StatelessWidget {
     return Expanded(
       child: Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 10.w),
+        margin: EdgeInsets.symmetric(horizontal: 8.w),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15.r),
+          borderRadius: BorderRadius.circular(12.r),
           child: CachedNetworkImage(
             imageUrl: imageUrl,
             fit: BoxFit.cover,
-            placeholder: (context, url) => Container(
-              color: Colors.grey[100],
-              child: const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2)),
-            ),
+            placeholder: (context, url) => Container(color: Colors.grey[50]),
             errorWidget: (context, url, error) =>
-                const Icon(Icons.broken_image_outlined),
+                const Icon(Icons.error_outline),
           ),
         ),
       ),
@@ -169,25 +153,25 @@ class ProductCardItem extends StatelessWidget {
 
   Widget _buildProductDetails() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 12.h),
+      padding: EdgeInsets.fromLTRB(10.w, 6.h, 10.w, 10.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'من وين اشتري ده؟',
-            style: AppTextStyles.font12BlackRegular.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 11.sp,
+            'Where to buy this?',
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 10.sp,
+              color: Colors.black,
             ),
             maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
-          verticalSpace(2),
           Text(
-            'أبحث عن أفضل سعر ومكان',
+            'Looking for best deals',
             style: TextStyle(
               color: Colors.grey[500],
-              fontSize: 9.sp,
+              fontSize: 8.sp,
+              fontWeight: FontWeight.w500,
             ),
             maxLines: 1,
           ),

@@ -39,7 +39,8 @@ class MainScaffold extends StatelessWidget {
             index: selectedIndex,
             children: _pages,
           ),
-          bottomNavigationBar: _buildModernNavBar(context, selectedIndex),
+          bottomNavigationBar:
+              SafeArea(child: _buildModernNavBar(context, selectedIndex)),
         );
       },
     );
@@ -158,7 +159,7 @@ class MainScaffold extends StatelessWidget {
               target: isSelected
                   ? 1
                   : 0) //when is selectd true the animation will happen else not happen
-          .rotate(begin: 0, end: 0.125), // يدور قليلاً ليصبح x عند الاختيار
+          .rotate(begin: 0, end: 0.125),
     );
   }
 }

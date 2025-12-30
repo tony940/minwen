@@ -10,6 +10,8 @@ import 'package:minwen/features/auth/sign_up/presentation/pages/regiseration_suc
 import 'package:minwen/features/auth/sign_up/presentation/pages/sign_up_screen.dart';
 import 'package:minwen/features/notification/presentation/cubit/notification_cubit.dart';
 import 'package:minwen/features/notification/presentation/pages/notification_screen.dart';
+import 'package:minwen/features/profile/presentation/pages/edit_profile_screen.dart';
+import 'package:minwen/features/profile/presentation/pages/privacy_and_security_screen.dart';
 import 'package:minwen/features/splash/presentation/pages/splash_screen.dart';
 import 'package:minwen/main_scaffold.dart';
 
@@ -21,6 +23,9 @@ class AppRouter {
   static final String regiserationSuccess = '/regiserationSuccess';
   static final String mainScaffold = '/mainScaffold';
   static final String notification = '/notification';
+  static final String editProfileScreen = '/editProfileScreen';
+  static final String privacyAndSecurityScreen = '/privacyAndSecurityScreen';
+
   static final GoRouter router = GoRouter(
     initialLocation: mainScaffold,
     routes: [
@@ -57,6 +62,14 @@ class AppRouter {
           create: (context) => getIt<NotificationCubit>()..getAllNotification(),
           child: NotificationScreen(),
         ),
+      ),
+      GoRoute(
+        path: editProfileScreen,
+        builder: (context, state) => EditProfileScreen(),
+      ),
+      GoRoute(
+        path: privacyAndSecurityScreen,
+        builder: (context, state) => PrivacyAndSecurityScreen(),
       ),
     ],
     errorBuilder: (context, state) =>

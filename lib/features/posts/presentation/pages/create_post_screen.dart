@@ -1,7 +1,7 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:minwen/core/utils/my_toast.dart';
 import 'package:minwen/core/widgets/app_loading_dialog.dart';
 import 'package:minwen/features/posts/presentation/cubit/create_post_cubit.dart';
@@ -18,36 +18,39 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
-          child: BlocListener<CreatePostCubit, CreatePostState>(
-            listener: (context, state) {
-              if (state is CreatePostLoadingState) {
-                AppLoadingDialog.show(context, message: 'Publishing...');
-              } else if (state is CreatePostSuccessState) {
-                MyToast.success(context, 'Post created successfully');
-                AppLoadingDialog.hide(context);
-              } else if (state is CreatePostFailureState) {
-                MyToast.error(context, 'Failed to create post');
-                AppLoadingDialog.hide(context);
-              }
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildUserHeader(),
-                SizedBox(height: 25.h),
-                _buildInputArea(),
-                SizedBox(height: 20.h),
-                // Enhanced Unified Media Selector
-                _buildUnifiedMediaCard(),
-                SizedBox(height: 40.h),
-                _buildPremiumPublishButton(context),
-              ],
+    // GestureDetector handles the FocusNode unfocus logic when tapping anywhere
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF8F9FA),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+            child: BlocListener<CreatePostCubit, CreatePostState>(
+              listener: (context, state) {
+                if (state is CreatePostLoadingState) {
+                  AppLoadingDialog.show(context, message: 'Publishing...');
+                } else if (state is CreatePostSuccessState) {
+                  MyToast.success(context, 'Post created successfully');
+                  AppLoadingDialog.hide(context);
+                } else if (state is CreatePostFailureState) {
+                  MyToast.error(context, 'Failed to create post');
+                  AppLoadingDialog.hide(context);
+                }
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildUserHeader(),
+                  SizedBox(height: 25.h),
+                  _buildInputArea(),
+                  SizedBox(height: 20.h),
+                  _buildUnifiedMediaCard(),
+                  SizedBox(height: 40.h),
+                  _buildPremiumPublishButton(context),
+                ],
+              ),
             ),
           ),
         ),
@@ -76,7 +79,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'أحمد العتيبي',
+              'Ahmed Al-Otaibi',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.sp,
@@ -84,7 +87,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               ),
             ),
             Text(
-              'ينشر في العامة',
+              'Posting to Public',
               style: TextStyle(color: Colors.grey[600], fontSize: 12.sp),
             ),
           ],
@@ -112,7 +115,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         maxLines: 6,
         style: TextStyle(fontSize: 16.sp, height: 1.5),
         decoration: InputDecoration(
-          hintText: 'ما الذي تبحث عنه؟',
+          hintText: 'What are you looking for?',
           hintStyle: TextStyle(color: Colors.grey[400], fontSize: 15.sp),
           border: InputBorder.none,
         ),
@@ -123,7 +126,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget _buildUnifiedMediaCard() {
     return GestureDetector(
       onTap: () {
-        // Logic to pick Image or Video
+        // TODO: Media picking logic
+        context.read<CreatePostCubit>().pickMedia();
       },
       child: Container(
         width: double.infinity,
@@ -135,7 +139,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             end: Alignment.bottomRight,
             colors: [
               Colors.white,
-              const Color(0xFFF1F3F2), // Very light grey-green
+              const Color(0xFFF1F3F2),
             ],
           ),
           boxShadow: [
@@ -148,7 +152,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         child: Stack(
           children: [
-            // 1. Decorative "Glass" shapes in the background
             Positioned(
               right: -20,
               top: -20,
@@ -157,13 +160,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 backgroundColor: const Color(0xFFC59849).withOpacity(0.05),
               ),
             ),
-
-            // 2. Main Content Layout
             Padding(
               padding: EdgeInsets.all(20.r),
               child: Row(
                 children: [
-                  // Icon Branding with "Glass" effect
                   Container(
                     height: 80.r,
                     width: 80.r,
@@ -181,15 +181,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ),
                   SizedBox(width: 16.w),
-
-                  // Text Content
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'معرض الوسائط',
+                          'Media Gallery',
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w900,
@@ -199,7 +197,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                         SizedBox(height: 4.h),
                         Text(
-                          'أضف صور عالية الجودة أو مقاطع فيديو لتنشيط منشورك',
+                          'Add high-quality photos or videos to boost your post',
                           style: TextStyle(
                             fontSize: 11.sp,
                             height: 1.4,
@@ -209,8 +207,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       ],
                     ),
                   ),
-
-                  // Add button
                   Container(
                     padding: EdgeInsets.all(8.r),
                     decoration: BoxDecoration(
@@ -231,13 +227,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ],
         ),
       ),
-    );
+    ).animate().fadeIn(delay: 200.ms);
   }
 
   Widget _buildPremiumPublishButton(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 45.h,
+      height: 50.h,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF1B4332), Color(0xFF2D6A4F)],
@@ -267,7 +263,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'نشر المحتوى',
+              'Publish Content',
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w900,
@@ -281,6 +277,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ],
         ),
       ),
-    );
+    ).animate().fadeIn(delay: 400.ms);
   }
 }

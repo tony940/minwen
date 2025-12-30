@@ -9,39 +9,45 @@ class CreatePostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24.r),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF1B4332).withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          )
-        ],
+        borderRadius: BorderRadius.circular(16.r), // Slimmer radius
+        border: Border.all(color: Colors.grey[100]!), // Surgical border
       ),
       child: Column(
         children: [
           Row(
             children: [
               _buildAvatar(),
-              horizontalSpace(12),
+              horizontalSpace(10),
               Expanded(
                 child: Text(
-                  'ماذا تبحث عنه اليوم يا $userName؟',
-                  style: TextStyle(color: Colors.grey[400], fontSize: 13.sp),
+                  'What are you looking for, $userName?',
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
+              // Optional: Small plus icon to indicate "Create"
+              Icon(Icons.add_circle_outline_rounded,
+                  color: Colors.grey[300], size: 18.sp),
             ],
           ),
-          verticalSpace(16),
+          verticalSpace(12),
+          const Divider(height: 1, thickness: 0.5, color: Color(0xFFF5F5F5)),
+          verticalSpace(10),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildMiniAction(Icons.image_rounded, "صورة", Colors.green),
-              horizontalSpace(12),
-              _buildMiniAction(Icons.videocam_rounded, "فيديو", Colors.red),
+              _buildSlimAction(
+                  Icons.image_outlined, "Photo", Colors.blueAccent),
+              _buildSlimAction(
+                  Icons.videocam_outlined, "Video", Colors.redAccent),
+              _buildSlimAction(
+                  Icons.location_on_outlined, "Location", Colors.teal),
             ],
           ),
         ],
@@ -50,35 +56,28 @@ class CreatePostCard extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    return Container(
-      padding: EdgeInsets.all(2.w),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: const Color(0xFF1B4332).withOpacity(0.1)),
-      ),
-      child: CircleAvatar(
-        radius: 18.r,
-        backgroundImage: const NetworkImage('https://i.pravatar.cc/150?u=4'),
-      ),
+    return CircleAvatar(
+      radius: 16.r, // Slimmer radius
+      backgroundColor: Colors.grey[100],
+      backgroundImage: const NetworkImage('https://i.pravatar.cc/150?u=4'),
     );
   }
 
-  Widget _buildMiniAction(IconData icon, String label, Color color) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: color, size: 16.sp),
-          horizontalSpace(6),
-          Text(label,
-              style: TextStyle(
-                  fontSize: 11.sp, fontWeight: FontWeight.bold, color: color)),
-        ],
-      ),
+  Widget _buildSlimAction(IconData icon, String label, Color color) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: color.withOpacity(0.8), size: 16.sp),
+        horizontalSpace(6),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11.sp,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
     );
   }
 }

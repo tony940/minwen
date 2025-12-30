@@ -3,11 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart';
 import 'package:minwen/core/routing/app_router.dart';
 import 'package:minwen/core/shared/cubit/main_scaffold_cubit.dart';
 import 'package:minwen/core/themes/app_colors.dart';
-import 'package:path/path.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
@@ -15,36 +13,33 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 12.h),
+      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 10.h), // Slimmer padding
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(24.r),
-          bottomRight: Radius.circular(24.r),
+          bottomLeft: Radius.circular(20.r), // Reduced radius for slim look
+          bottomRight: Radius.circular(20.r),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.02),
-            blurRadius: 15,
-            offset: const Offset(0, 4),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: SafeArea(
+        bottom: false,
         child: Row(
           children: [
             _buildProfileAvatar(context),
-            SizedBox(width: 12.w),
+            SizedBox(width: 10.w),
             Expanded(child: _buildWelcomeSection()),
-            // زر التنبيهات الجديد
             _buildNotificationButton(context),
-            SizedBox(width: 8.w),
-
-            _buildSmallAskButton(context),
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.1, end: 0);
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.05, end: 0);
   }
 
   Widget _buildWelcomeSection() {
@@ -53,19 +48,20 @@ class HomeAppBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Welcome, mohamed 👋',
+          'Welcome, Mohamed 👋',
           style: TextStyle(
-            fontSize: 10.sp,
-            fontWeight: FontWeight.w600,
+            fontSize: 12.sp, // Slightly bigger for readability but thin
+            fontWeight: FontWeight.w700,
             color: Colors.black87,
+            letterSpacing: -0.3,
           ),
         ),
         Text(
-          'من وين اسال ؟ تلاقي ',
+          'Where to find? Just ask.',
           style: TextStyle(
             fontSize: 10.sp,
             color: Colors.grey[500],
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],
@@ -74,33 +70,30 @@ class HomeAppBar extends StatelessWidget {
 
   Widget _buildNotificationButton(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.push(AppRouter.notification);
-      },
+      onTap: () => context.push(AppRouter.notification),
       child: Stack(
         alignment: Alignment.topRight,
         children: [
           Container(
-            height: 30.h,
-            width: 30.h,
+            height: 32.h,
+            width: 32.h,
             decoration: BoxDecoration(
               color: Colors.grey[50],
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey[200]!, width: 0.5),
+              border: Border.all(color: Colors.grey[100]!, width: 1),
             ),
             child: Icon(
-              Icons.notifications_none_rounded, // أيقونة ناعمة ومودرن
+              Icons.notifications_none_rounded,
               color: Colors.black87,
-              size: 22.sp,
+              size: 20.sp,
             ),
           ),
-          // النقطة الحمراء (الاشعار)
           Positioned(
-            top: 8.h,
-            right: 8.w,
+            top: 6.h,
+            right: 6.w,
             child: Container(
-              height: 8.h,
-              width: 8.h,
+              height: 7.h,
+              width: 7.h,
               decoration: BoxDecoration(
                 color: const Color(0xFFFF5252),
                 shape: BoxShape.circle,
@@ -113,62 +106,18 @@ class HomeAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildSmallAskButton(BuildContext context) {
-    // أضفنا الـ context هنا
-    return GestureDetector(
-      onTap: () {
-        context.read<MainScaffoldCubit>().changeIndex(2);
-      },
-      child: Container(
-        height: 38.h,
-        padding: EdgeInsets.symmetric(horizontal: 14.w),
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryColor.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.add_circle_outline_rounded,
-                  color: Colors.white, size: 16.sp),
-              SizedBox(width: 6.w),
-              Text(
-                'اسأل',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildProfileAvatar(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.read<MainScaffoldCubit>().changeIndex(4);
-      },
+      onTap: () => context.read<MainScaffoldCubit>().changeIndex(4),
       child: Container(
-        padding: EdgeInsets.all(2.w),
+        padding: EdgeInsets.all(1.5.w),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
               color: AppColors.primaryColor.withOpacity(0.1), width: 1),
         ),
         child: CircleAvatar(
-          radius: 18.r,
+          radius: 17.r, // Slimmer radius
           backgroundColor: Colors.grey[100],
           backgroundImage: const NetworkImage('https://i.pravatar.cc/150?u=24'),
         ),

@@ -15,11 +15,12 @@ class NotificationAppBar extends StatelessWidget {
       surfaceTintColor: Colors.white,
       elevation: 0,
       title: Text(
-        'التنبيهات',
+        'Notifications',
         style: TextStyle(
-            color: AppColors.primaryColor,
-            fontWeight: FontWeight.w900,
-            fontSize: 24.sp),
+          color: AppColors.primaryColor,
+          fontWeight: FontWeight.w900,
+          fontSize: 22.sp,
+        ),
       ),
       actions: [
         IconButton(
